@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    environment{
+        BUCKET_NAME = "saurabhcricket2299-aws-s3"
+    }
+    stages {
+        stage('git') {
+            steps {
+                echo 'code cloning'
+                git branch: 'main', url: 'https://github.com/saurabht22/cricketgamerepo.git'
+            }
+        }
+        stage('create s3 bucket') {
+            steps {
+                echo 's3 bucket'
+                sh "aws s3 mb s3://${BUCKET_NAME}"
+            }
+        }
+        stage('sync the bucket') {
+            steps {
+                echo 'sync date'
+                sh 'aws s3 sync . s3://${BUCKET_NAME}/'
+            }
+        }
+    }
+}

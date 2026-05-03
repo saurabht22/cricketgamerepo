@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cricket Game</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: linear-gradient(to right, #0f2027, #2c5364);
+            color: white;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        .scoreboard {
+            background: rgba(0,0,0,0.5);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .hit-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .reset-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .result {
+            font-size: 22px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>🏏 Cricket Game</h1>
+
+<div class="scoreboard">
+    <h2>Score: <span id="score">0</span>/<span id="wickets">0</span></h2>
+    <h3>Overs: <span id="overs">0.0</span></h3>
+</div>
+
+<br>
+
+<button class="hit-btn" onclick="playBall()">Play Shot</button>
+<button class="reset-btn" onclick="resetGame()">Restart</button>
+
+<div class="result" id="result"></div>
+
+<script>
+    let score = 0;
+    let wickets = 0;
+    let balls = 0;
+    let maxOvers = 2; // 2 overs game
+
+    function playBall() {
+        if (wickets >= 10 || balls >= maxOvers * 6) {
+            document.getElementById("result").innerText = "Game Over!";
+            return;
+        }
+
+        let outcome = Math.floor(Math.random() * 8); // 0-7
+
+        balls++;
+
+        if (outcome === 7) {
+            wickets++;
+            document.getElementById("result").innerText = "WICKET!";
+        } else {
+            score += outcome;
+            document.getElementById("result").innerText = "You scored " + outcome + " run(s)";
+        }
+
+        updateScoreboard();
+
+        if (wickets >= 10 || balls >= maxOvers * 6) {
+            document.getElementById("result").innerText += " | Game Over!";
+        }
+    }
+
+    function updateScoreboard() {
+        document.getElementById("score").innerText = score;
+        document.getElementById("wickets").innerText = wickets;
+
+        let overs = Math.floor(balls / 6);
+        let remainingBalls = balls % 6;
+
+        document.getElementById("overs").innerText = overs + "." + remainingBalls;
+    }
+
+    function resetGame() {
+        score = 0;
+        wickets = 0;
+        balls = 0;
+        document.getElementById("result").innerText = "";
+        updateScoreboard();
+    }
+</script>
+
+</body>
+</html>

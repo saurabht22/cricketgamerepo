@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+tools{
+    nodejs 'npm'
+}
+    stages {
+        stage('git clone') {
+            steps {
+                echo 'cloning the code'
+                git branch: 'main', url: 'https://github.com/mantasha0cloud/weather_app_node_js.git'
+            }
+        }
+        stage('build') {
+            steps {
+                echo 'Building..'
+                sh 'npm install'
+            }
+        }
+        stage('start') {
+            steps {
+                echo 'starting...'
+                sh 'npm start'
+            }
+         }
+    }
+}

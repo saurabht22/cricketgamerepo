@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    environment {
+        BUCKET_NAME = "saurabhcricket22998-aws-s3"
+    }
+
+    triggers {
+        githubPush()
+    }
+
+    stages {
+
+        stage('git') {
+            steps {
+                echo 'code cloning'
+                git branch: 'main',
+                    url: 'https://github.com/saurabht22/cricketgamerepo.git'
+            }
+        }
+
+        stage('create s3 bucket') {
+            steps {
+                script {
+
+                    def checkBucket = sh(
+                        script: "aws s3 ls s3://${BUCKET_NAME}",
+                        returnStatus: true
+                    )
+
+                    if (checkBucket != 0) {
+                        echo 'Bucket not present, creating bucket'
+                        sh "aws s3 mb s3://${BUCKET_NAME}"
+                    }
+                    else {
+                        echo 'Bucket already exists'
+                    }
+                }
+            }
+        }
+
+        stage('sync the bucket') {
+            steps {
+                echo 'sync data'
+                sh "aws s3 sync . s3://${BUCKET_NAME}/"
+            }
+        }
+    }
+}

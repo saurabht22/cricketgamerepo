@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment{
-        BUCKET_NAME = "saurabhcricket2299-aws-s3"
+        BUCKET_NAME = "saurabhcricket22998-aws-s3"
     }
     stages {
         stage('git') {
